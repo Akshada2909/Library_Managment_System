@@ -2,36 +2,109 @@ import java.util.ArrayList;
 
 public class Library {
 
-    private ArrayList<Book> books = new ArrayList<>();
-    private ArrayList<Member> members = new ArrayList<>();
+    private ArrayList<Book> books;
+    private ArrayList<Member> members;
 
+    public Library() {
+        books = new ArrayList<>();
+        members = new ArrayList<>();
+    }
+
+    // Add book
     public void addBook(Book book) {
         books.add(book);
+        System.out.println("Book added successfully.");
     }
 
+    // Register member
     public void addMember(Member member) {
         members.add(member);
+        System.out.println("Member registered successfully.");
     }
 
-    public void viewBooks() {
-        System.out.println("\n=== AVAILABLE BOOKS ===");
-        for (Book b : books) {
-            System.out.println(b.getTitle() + " | " + b.getAuthor() +
-                    " | Available: " + b.isAvailable());
+    // Display all books
+    public void displayAllBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books available.");
+            return;
+        }
+        for (Book book : books) {
+            System.out.println(book);
         }
     }
 
-    public Book searchBook(String keyword) {
-        for (Book b : books) {
-            if (b.getTitle().equalsIgnoreCase(keyword) ||
-                b.getAuthor().equalsIgnoreCase(keyword)) {
-                return b;
+    // Display available books
+    public void displayAvailableBooks() {
+        boolean found = false;
+        for (Book book : books) {
+            if (book.isAvailable()) {
+                System.out.println(book);
+                found = true;
             }
         }
-        return null;
+        if (!found) {
+            System.out.println("No available books.");
+        }
     }
 
-    public Member getMember(int id) {
+    // Search books
+    public void searchBooks(String keyword) {
+        boolean found = false;
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(keyword) ||
+                book.getAuthor().equalsIgnoreCase(keyword)) {
+                System.out.println(book);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Book not found.");
+        }
+    }
+
+    // Borrow book
+    public void borrowBook(int memberId, String isbn) {
+        Member member = findMember(memberId);
+        Book book = findBook(isbn);
+
+        if (member == null) {
+            System.out.println("Member not found.");
+            return;
+        }
+        if (book == null) {
+            System.out.println("Book not found.");
+            return;
+        }
+        if (!book.isAvailable()) {
+            System.out.println("Book already borrowed.");
+            return;
+        }
+
+        book.setAvailable(false);
+        member.borrowBook(book);
+        System.out.println("Book borrowed successfully.");
+    }
+
+    // Return book
+    public void returnBook(int memberId, String isbn) {
+        Member member = findMember(memberId);
+        Book book = findBook(isbn);
+
+        if (member == null || book == null) {
+            System.out.println("Invalid member or book.");
+            return;
+        }
+
+        if (member.getBorrowedBooks().contains(book)) {
+            book.setAvailable(true);
+            member.returnBook(book);
+            System.out.println("Book returned successfully.");
+        } else {
+            System.out.println("This member did not borrow this book.");
+        }
+    }
+
+    private Member findMember(int id) {
         for (Member m : members) {
             if (m.getMemberId() == id) {
                 return m;
@@ -40,42 +113,12 @@ public class Library {
         return null;
     }
 
-    public void borrowBook(int memberId, String bookTitle) {
-        Member member = getMember(memberId);
-        Book book = searchBook(bookTitle);
-
-        if (member == null || book == null) {
-            System.out.println("Member or Book not found.");
-            return;
-        }
-
-        if (!book.isAvailable()) {
-            System.out.println("Book is already borrowed.");
-            return;
-        }
-
-        book.setAvailable(false);
-        member.getBorrowedBooks().add(book);
-        System.out.println("Book borrowed successfully.");
-    }
-
-    public void returnBook(int memberId, String bookTitle) {
-        Member member = getMember(memberId);
-
-        if (member == null) {
-            System.out.println("Member not found.");
-            return;
-        }
-
-        for (Book b : member.getBorrowedBooks()) {
-            if (b.getTitle().equalsIgnoreCase(bookTitle)) {
-                b.setAvailable(true);
-                member.getBorrowedBooks().remove(b);
-                System.out.println("Book returned successfully.");
-                return;
+    private Book findBook(String isbn) {
+        for (Book b : books) {
+            if (b.getIsbn().equalsIgnoreCase(isbn)) {
+                return b;
             }
         }
-
-        System.out.println("This book was not borrowed by the member.");
+        return null;
     }
 }

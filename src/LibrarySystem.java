@@ -6,66 +6,89 @@ public class LibrarySystem {
 
         Library library = new Library();
         Scanner sc = new Scanner(System.in);
+        int choice;
 
-        library.addBook(new Book("101", "Java Basics", "James", "Programming"));
-        library.addBook(new Book("102", "OOP Concepts", "Dennis", "Programming"));
-
-        library.addMember(new Member(1, "Akshada", "9999999999"));
-
-        while (true) {
+        do {
             System.out.println("\n=== LIBRARY MANAGEMENT SYSTEM ===");
-            System.out.println("1. View Books");
-            System.out.println("2. Search Book");
-            System.out.println("3. Borrow Book");
-            System.out.println("4. Return Book");
-            System.out.println("5. Exit");
-            System.out.print("Enter choice: ");
+            System.out.println("1. Add New Book");
+            System.out.println("2. Register New Member");
+            System.out.println("3. Display All Books");
+            System.out.println("4. Display Available Books");
+            System.out.println("5. Search Books");
+            System.out.println("6. Borrow Book");
+            System.out.println("7. Return Book");
+            System.out.println("8. Exit");
+            System.out.print("Enter your choice: ");
 
-            int choice = sc.nextInt();
+            choice = sc.nextInt();
             sc.nextLine();
 
             switch (choice) {
-
                 case 1:
-                    library.viewBooks();
+                    System.out.print("Enter ISBN: ");
+                    String isbn = sc.nextLine();
+                    System.out.print("Enter Title: ");
+                    String title = sc.nextLine();
+                    System.out.print("Enter Author: ");
+                    String author = sc.nextLine();
+                    System.out.print("Enter Genre: ");
+                    String genre = sc.nextLine();
+                    library.addBook(new Book(isbn, title, author, genre));
                     break;
 
                 case 2:
-                    System.out.print("Enter title or author: ");
-                    String key = sc.nextLine();
-                    Book book = library.searchBook(key);
-                    if (book != null) {
-                        System.out.println("Book Found: " + book.getTitle());
-                    } else {
-                        System.out.println("Book not found.");
-                    }
+                    System.out.print("Enter Member ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Contact: ");
+                    String contact = sc.nextLine();
+                    library.addMember(new Member(id, name, contact));
                     break;
 
                 case 3:
-                    System.out.print("Enter Member ID: ");
-                    int mid = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Enter Book Title: ");
-                    String bt = sc.nextLine();
-                    library.borrowBook(mid, bt);
+                    library.displayAllBooks();
                     break;
 
                 case 4:
-                    System.out.print("Enter Member ID: ");
-                    int rm = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Enter Book Title: ");
-                    String rb = sc.nextLine();
-                    library.returnBook(rm, rb);
+                    library.displayAvailableBooks();
                     break;
 
                 case 5:
+                    System.out.print("Enter title or author to search: ");
+                    String key = sc.nextLine();
+                    library.searchBooks(key);
+                    break;
+
+                case 6:
+                    System.out.print("Enter Member ID: ");
+                    int mid = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Book ISBN: ");
+                    String bisbn = sc.nextLine();
+                    library.borrowBook(mid, bisbn);
+                    break;
+
+                case 7:
+                    System.out.print("Enter Member ID: ");
+                    int rid = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Book ISBN: ");
+                    String risbn = sc.nextLine();
+                    library.returnBook(rid, risbn);
+                    break;
+
+                case 8:
                     System.out.println("Thank you for using Library Management System.");
-                    System.exit(0);
+                    break;
 
                 default:
-                    System.out.println("Invalid choice.");
+                    System.out.println("Invalid choice. Try again.");
             }
-        }
+
+        } while (choice != 8);
+
+        sc.close();
     }
 }

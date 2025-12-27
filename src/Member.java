@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 public class Member {
@@ -26,5 +25,12 @@ public class Member {
     public ArrayList<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
-}
 
+    public void borrowBook(Book book) {
+        borrowedBooks.add(book);
+    }
+
+    public void returnBook(Book book) {
+        borrowedBooks.remove(book);
+    }
+}

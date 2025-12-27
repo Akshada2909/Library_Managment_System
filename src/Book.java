@@ -37,4 +37,15 @@ public class Book {
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
+    
+    @Override
+    public String toString() {
+        return "ISBN: " + isbn +
+               ", Title: " + title +
+               ", Author: " + author +
+               ", Genre: " + genre +
+               ", Status: " + (available ? "Available" : "Borrowed");
+    }
+
 }
