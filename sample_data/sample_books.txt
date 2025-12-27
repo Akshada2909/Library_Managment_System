@@ -1,0 +1,23 @@
+ISBN: 101
+Title: Clean Code
+Author: Robert C. Martin
+Genre: Programming
+Availability: Available
+----------------------------
+ISBN: 102
+Title: Effective Java
+Author: Joshua Bloch
+Genre: Programming
+Availability: Available
+----------------------------
+ISBN: 103
+Title: The Alchemist
+Author: Paulo Coelho
+Genre: Fiction
+Availability: Available
+----------------------------
+ISBN: 104
+Title: Introduction to Algorithms
+Author: Thomas H. Cormen
+Genre: Education
+Availability: Available
